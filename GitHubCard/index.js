@@ -6,16 +6,31 @@ const entryPoint = document.querySelector('.cards')
 
 axios.get("http://api.github.com/users/hooliocoolio")
   .then( (response) => {
-    // 3. Once we receive that data, we want to create some components. 
-    response.data.message.forEach( (data) => {
-      const newUserCard = gitHubUserCard(data);
-      // 4. Add the components to the screen. 
+    response.message.forEach((gitUser) => {
+      const newUserCard = gitHubUserCard(gitUser, data)
       entryPoint.appendChild(newUserCard);
     })
   })
-  .catch( (err) => {
-    console.log("the data was not returned", err)
+  // handle success
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
   });
+
+// .then((response) => {
+//   // 3. Once we receive that data, we want to create some components. 
+//   response.data.message.forEach((data) => {
+//     const newUserCard = gitHubUserCard(data);
+//     // 4. Add the components to the screen. 
+//     entryPoint.appendChild(newUserCard);
+//   })
+// })
+// .catch((err) => {
+//   console.log("the data was not returned", err)
+// });
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -24,6 +39,10 @@ axios.get("http://api.github.com/users/hooliocoolio")
    Skip to Step 3.
 */
 
+// const axios = require('axios').default;
+// const axios = require('axios');
+
+// Make a request for a user with a given ID
 
 
 
@@ -66,33 +85,57 @@ const followersArray = [];
 */
 
 
-function gitHubUserCard(data) {
-  // HTML Elements
-  const card = document.createElement("div");
-  const image = document.createElement("img");
-  const cardInfo = document.createElement("div");
-  const name = document.createElement("h3");
+function gitHubUserCard(user, data) {
+  // HTML Elements and the classes
+  const userCard = document.createElement("div");
+  const avatarImg = document.createElement("img");
+  const info = document.createElement("div");
+  const realName = document.createElement("h3");
   const userName = document.createElement("p");
-  const location = document.createElement("p");
-  const urlAddress = document.createElement("a");
+  const located = document.createElement("p");
   const profile = document.createElement("p");
+  const gitHubUrl = document.createElement("a");
   const followers = document.createElement("p");
   const following = document.createElement("p");
   const bio = document.createElement("p");
 
+
+  userCard.classList.add('card');
+  avatarImg.classList.add('userImg');
+  info.classList.add('card-info');
+  realName.classList.add('name');
+  userName.classList.add('username');
+  located.classList.add('location');
+  profile.classList.add('profile');
+  gitHubUrl.classList.add('ghubUrl');
+  followers.classList.add('followers');
+  following.classList.add('following');
+  bio.classList.add('bio');
+
   // HTML Elements Structure
-  card.appendChild(image);
+  card.appendChild(avatarImg);
   card.appendChild(cardInfo);
-  cardInfo.appendChild(name);
-  cardInfo.appendChild(userName);
-  cardInfo.appendChild(location);
-  cardInfo.appendChild(profile);
-  cardInfo.appendChild(followers);
-  cardInfo.appendChild(following);
-  cardInfo.appendChild(bio);
+  info.appendChild(realName);
+  info.appendChild(userName);
+  info.appendChild(located);
+  info.appendChild(profile);
+  info.appendChild(gitHubUrl)
+  info.appendChild(followers);
+  info.appendChild(following);
+  info.appendChild(bio);
+
+
+  // Input the data
+
+  avatarImg.src = data.avatar_url;
+  realName.textContent = data.name;
+  userName.textContent = data.login;
+  located.textContent = data.location;
+  profile.textContent = data.url;
+
+
 
 }
-
 
 
 
